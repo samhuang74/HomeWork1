@@ -12,12 +12,17 @@ namespace HomeWork1.Controllers
 {
     public class 客戶資料Controller : Controller
     {
-        private CustomerEntities db = new CustomerEntities();
+        I客戶資料Repository _客戶資料Repository;
+
+        public 客戶資料Controller()
+        {
+            _客戶資料Repository = RepositoryHelper.Get客戶資料Repository();
+        }
 
         // GET: 客戶資料
         public ActionResult Index()
-        {
-            return View(db.客戶資料.ToList());
+        {            
+            return View(_客戶資料Repository.ReadAllNotDelete().ToList());
         }
 
         // GET: 客戶資料/Details/5
