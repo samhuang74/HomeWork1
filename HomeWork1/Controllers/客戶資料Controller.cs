@@ -21,7 +21,7 @@ namespace HomeWork1.Controllers
 
         // GET: 客戶資料
         public ActionResult Index()
-        {            
+        {
             return View(_客戶資料Repository.ReadAllNotDelete().ToList());
         }
 
@@ -32,7 +32,7 @@ namespace HomeWork1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶資料 客戶資料 = db.客戶資料.Find(id);
+            客戶資料 客戶資料 = _客戶資料Repository.ReadNotDelete(id.Value);
             if (客戶資料 == null)
             {
                 return HttpNotFound();
@@ -55,8 +55,8 @@ namespace HomeWork1.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.客戶資料.Add(客戶資料);
-                db.SaveChanges();
+                _客戶資料Repository.UnitOfWork.Context.Entry(客戶資料).State = EntityState.Modified;
+                _客戶資料Repository.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
 
@@ -70,7 +70,7 @@ namespace HomeWork1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶資料 客戶資料 = db.客戶資料.Find(id);
+            客戶資料 客戶資料 = _客戶資料Repository.ReadNotDelete(id.Value);
             if (客戶資料 == null)
             {
                 return HttpNotFound();
@@ -87,8 +87,8 @@ namespace HomeWork1.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(客戶資料).State = EntityState.Modified;
-                db.SaveChanges();
+                _客戶資料Repository.UnitOfWork.Context.Entry(客戶資料).State = EntityState.Modified;
+                _客戶資料Repository.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
             return View(客戶資料);
@@ -101,7 +101,7 @@ namespace HomeWork1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶資料 客戶資料 = db.客戶資料.Find(id);
+            客戶資料 客戶資料 = _客戶資料Repository.ReadNotDelete(id.Value);
             if (客戶資料 == null)
             {
                 return HttpNotFound();
@@ -114,9 +114,9 @@ namespace HomeWork1.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            客戶資料 客戶資料 = db.客戶資料.Find(id);
-            db.客戶資料.Remove(客戶資料);
-            db.SaveChanges();
+            客戶資料 客戶資料 = _客戶資料Repository.ReadNotDelete(id);
+            _客戶資料Repository.Delete(客戶資料);
+            _客戶資料Repository.UnitOfWork.Commit();
             return RedirectToAction("Index");
         }
 
@@ -124,7 +124,7 @@ namespace HomeWork1.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                
             }
             base.Dispose(disposing);
         }
