@@ -13,16 +13,18 @@ namespace HomeWork1.Controllers
     public class 客戶聯絡人Controller : Controller
     {
         I客戶聯絡人Repository _客戶聯絡人Repository;
+        I客戶資料Repository _客戶資料Repository;
 
         public 客戶聯絡人Controller()
         {
-            _客戶聯絡人Repository = new 客戶聯絡人Repository();
+            _客戶聯絡人Repository = RepositoryHelper.Get客戶聯絡人Repository();
+            _客戶資料Repository = RepositoryHelper.Get客戶資料Repository();
         }
 
 
-        public ActionResult Index(int 客戶Id)
+        public ActionResult Index()
         {
-            var 客戶聯絡人 = _客戶聯絡人Repository.ReadAllNotDelete().Where(a => a.客戶Id == 客戶Id);
+            var 客戶聯絡人 = _客戶聯絡人Repository.ReadAllNotDelete();
             return View(客戶聯絡人.ToList());
         }
 
@@ -80,7 +82,7 @@ namespace HomeWork1.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.客戶Id = new SelectList(_客戶聯絡人Repository.ReadAllNotDelete(), "Id", "客戶名稱", 客戶聯絡人.客戶Id);
+            ViewBag.客戶Id = new SelectList(_客戶資料Repository.ReadAllNotDelete(), "Id", "客戶名稱", 客戶聯絡人.客戶Id);
             return View(客戶聯絡人);
         }
 

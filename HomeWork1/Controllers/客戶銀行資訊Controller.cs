@@ -22,9 +22,9 @@ namespace HomeWork1.Controllers
         }
 
         // GET: 客戶銀行資訊
-        public ActionResult Index(int 客戶Id)
+        public ActionResult Index()
         {
-            var 客戶銀行資訊 = _客戶銀行資訊Repository.ReadAllNotDelete().Where(a => a.客戶Id == 客戶Id);
+            var 客戶銀行資訊 = _客戶銀行資訊Repository.ReadAllNotDelete();
             return View(客戶銀行資訊.ToList());
         }
 
