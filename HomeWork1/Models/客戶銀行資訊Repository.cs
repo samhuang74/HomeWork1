@@ -20,7 +20,6 @@ namespace HomeWork1.Models
         {
             entity.是否已刪除 = true;
             UnitOfWork.Context.Entry(entity).State = EntityState.Modified;
-            //UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -33,7 +32,6 @@ namespace HomeWork1.Models
             if (null != ReadNotDelete(entity.Id))
             {
                 UnitOfWork.Context.Entry(entity).State = EntityState.Modified;
-                //UnitOfWork.Commit();
             }
         }
 
