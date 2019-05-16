@@ -9,13 +9,13 @@ namespace HomeWork1.DataTypeAttributes
 {
     public sealed class MobilePhoneAttribute : DataTypeAttribute
     {
-        const String EmailReg = @"\d{4}-\d{6}";
+        const String MobilePhoneReg = @"\d{4}-\d{6}";
 
-        private static Regex _regex = new Regex(EmailReg, RegexOptions.IgnoreCase);
+        private static Regex _regex = new Regex(MobilePhoneReg, RegexOptions.IgnoreCase);
 
         public MobilePhoneAttribute() : base(DataType.PhoneNumber)
         {
-            ErrorMessage = "Phone 格式有誤";
+            ErrorMessage = "Phone 格式有誤 d4-d6 ";
         }
 
         public override bool IsValid(object value)

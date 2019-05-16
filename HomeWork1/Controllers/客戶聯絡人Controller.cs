@@ -47,7 +47,7 @@ namespace HomeWork1.Controllers
         // GET: 客戶聯絡人/Create
         public ActionResult Create()
         {
-            ViewBag.客戶Id = new SelectList(_客戶聯絡人Repository.ReadAllNotDelete(), "Id", "客戶名稱");
+            ViewBag.客戶Id = new SelectList(_客戶資料Repository.ReadAllNotDelete(), "Id", "客戶名稱");
             return View();
         }
 
@@ -66,7 +66,7 @@ namespace HomeWork1.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.客戶Id = new SelectList(_客戶聯絡人Repository.ReadAllNotDelete(), "Id", "客戶名稱", 客戶聯絡人.客戶Id);
+            ViewBag.客戶Id = new SelectList(_客戶資料Repository.ReadAllNotDelete(), "Id", "客戶名稱", 客戶聯絡人.客戶Id);
             return View(客戶聯絡人);
         }
 

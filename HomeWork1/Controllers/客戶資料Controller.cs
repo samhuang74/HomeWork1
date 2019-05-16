@@ -55,7 +55,7 @@ namespace HomeWork1.Controllers
         {
             if (ModelState.IsValid)
             {
-                _客戶資料Repository.UnitOfWork.Context.Entry(客戶資料).State = EntityState.Modified;
+                _客戶資料Repository.Add(客戶資料);
                 _客戶資料Repository.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
