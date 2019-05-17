@@ -35,7 +35,7 @@ namespace HomeWork1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            
+
             客戶聯絡人 客戶聯絡人 = _客戶聯絡人Repository.ReadNotDelete(id.Value);
             if (客戶聯絡人 == null)
             {
@@ -60,14 +60,42 @@ namespace HomeWork1.Controllers
         {
             if (ModelState.IsValid)
             {
-                _客戶聯絡人Repository.Add(客戶聯絡人);
-                _客戶聯絡人Repository.UnitOfWork.Commit();
-
-                return RedirectToAction("Index");
+                if (IsEmail重複(客戶聯絡人.客戶Id, null, 客戶聯絡人.Email))
+                {
+                    _客戶聯絡人Repository.Add(客戶聯絡人);
+                    _客戶聯絡人Repository.UnitOfWork.Commit();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ModelState.AddModelError("", 客戶聯絡人.客戶Id + " Email重複");
+                }
             }
 
             ViewBag.客戶Id = new SelectList(_客戶資料Repository.ReadAllNotDelete(), "Id", "客戶名稱", 客戶聯絡人.客戶Id);
             return View(客戶聯絡人);
+        }
+
+        private Boolean IsEmail重複(int 客戶Id, int? 客戶聯絡人Id, String 客戶聯絡人Email)
+        {
+            Boolean re = false;
+
+            if (!String.IsNullOrEmpty(客戶聯絡人Email))
+            {
+                var 客戶聯絡人 = _客戶聯絡人Repository.ReadAllNotDelete().Where(a => a.客戶Id == 客戶Id && a.Email.Equals(客戶聯絡人Email));
+
+                if (null != 客戶聯絡人Id)
+                {
+                    客戶聯絡人 = 客戶聯絡人.Where(a => a.Id != 客戶聯絡人Id);
+                }
+
+                if (客戶聯絡人.Count() > 0)
+                {
+                    re = true;
+                }
+            }
+
+            return re;
         }
 
         // GET: 客戶聯絡人/Edit/5
@@ -95,10 +123,18 @@ namespace HomeWork1.Controllers
         {
             if (ModelState.IsValid)
             {
-                _客戶聯絡人Repository.UnitOfWork.Context.Entry(客戶聯絡人).State = EntityState.Modified;
-                _客戶聯絡人Repository.UnitOfWork.Commit();
-                return RedirectToAction("Index");
+                if (IsEmail重複(客戶聯絡人.客戶Id, null, 客戶聯絡人.Email))
+                {
+                    _客戶聯絡人Repository.UnitOfWork.Context.Entry(客戶聯絡人).State = EntityState.Modified;
+                    _客戶聯絡人Repository.UnitOfWork.Commit();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ModelState.AddModelError("", 客戶聯絡人.客戶Id + " Email重複");
+                }
             }
+
             ViewBag.客戶Id = new SelectList(_客戶聯絡人Repository.ReadAllNotDelete(), "Id", "客戶名稱", 客戶聯絡人.客戶Id);
             return View(客戶聯絡人);
         }
@@ -132,7 +168,7 @@ namespace HomeWork1.Controllers
         {
             if (disposing)
             {
-                
+
             }
             base.Dispose(disposing);
         }
