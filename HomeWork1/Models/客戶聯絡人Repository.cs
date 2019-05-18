@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Data.Entity;
 
 namespace HomeWork1.Models
-{   
-	public  class 客戶聯絡人Repository : EFRepository<客戶聯絡人>, I客戶聯絡人Repository
-	{
+{
+    public class 客戶聯絡人Repository : EFRepository<客戶聯絡人>, I客戶聯絡人Repository
+    {
         /// <summary>
         /// 撈出位刪除的資料
         /// </summary>
@@ -16,10 +16,15 @@ namespace HomeWork1.Models
             return All().Where(a => !a.是否已刪除);
         }
 
-        public override void Delete(客戶聯絡人 entity)
+        public void UpdateToDelete(int id)
         {
-            entity.是否已刪除 = true;
-            UnitOfWork.Context.Entry(entity).State = EntityState.Modified;
+            客戶聯絡人 entity = ReadNotDelete(id);
+            if (null != entity)
+            {
+                entity.是否已刪除 = true;
+                UnitOfWork.Context.Entry(entity).State = EntityState.Modified;
+                UnitOfWork.Commit();
+            }
         }
 
         /// <summary>
@@ -46,10 +51,11 @@ namespace HomeWork1.Models
 
     }
 
-    public  interface I客戶聯絡人Repository : IRepository<客戶聯絡人>
-	{
+    public interface I客戶聯絡人Repository : IRepository<客戶聯絡人>
+    {
         IQueryable<客戶聯絡人> ReadAllNotDelete();
         void UpdateNotDelete(客戶聯絡人 entity);
+        void UpdateToDelete(int id);
         客戶聯絡人 ReadNotDelete(int id);
 
     }

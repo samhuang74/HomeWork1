@@ -121,9 +121,7 @@ namespace HomeWork1.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            客戶銀行資訊 客戶銀行資訊 = _客戶銀行資訊Repository.ReadNotDelete(id);
-            _客戶銀行資訊Repository.UnitOfWork.Context.Entry(客戶銀行資訊);
-            _客戶銀行資訊Repository.UnitOfWork.Commit();
+            _客戶銀行資訊Repository.UpdateToDelete(id);
             return RedirectToAction("Index");
         }
 

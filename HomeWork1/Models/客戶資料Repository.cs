@@ -22,7 +22,7 @@ namespace HomeWork1.Models
         /// </summary>
         /// <param name="entity"></param>
         public void UpdateNotDelete(客戶資料 entity)
-        {             
+        {
             if (null != ReadNotDelete(entity.Id))
             {
                 UnitOfWork.Context.Entry(entity).State = EntityState.Modified;
@@ -38,10 +38,15 @@ namespace HomeWork1.Models
             return All().Where(a => !a.是否已刪除);
         }
 
-        public override void Delete(客戶資料 entity)
+        public void UpdateToDelete(int id)
         {
-            entity.是否已刪除 = true;
-            UnitOfWork.Context.Entry(entity).State = EntityState.Modified;
+            客戶資料 entity = ReadNotDelete(id);
+            if (null != entity)
+            {
+                entity.是否已刪除 = true;
+                UnitOfWork.Context.Entry(entity).State = EntityState.Modified;
+                UnitOfWork.Commit();
+            }
         }
     }
 
@@ -50,5 +55,6 @@ namespace HomeWork1.Models
         IQueryable<客戶資料> ReadAllNotDelete();
         void UpdateNotDelete(客戶資料 entity);
         客戶資料 ReadNotDelete(int id);
+        void UpdateToDelete(int id);
     }
 }

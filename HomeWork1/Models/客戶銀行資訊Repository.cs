@@ -16,10 +16,15 @@ namespace HomeWork1.Models
             return All().Where(a => !a.是否已刪除);
         }
 
-        public override void Delete(客戶銀行資訊 entity)
+        public void UpdateToDelete(int id)
         {
-            entity.是否已刪除 = true;
-            UnitOfWork.Context.Entry(entity).State = EntityState.Modified;
+            客戶銀行資訊 entity = ReadNotDelete(id);
+            if (null != entity)
+            {
+                entity.是否已刪除 = true;
+                UnitOfWork.Context.Entry(entity).State = EntityState.Modified;
+                UnitOfWork.Commit();
+            }
         }
 
         /// <summary>
@@ -51,6 +56,6 @@ namespace HomeWork1.Models
         IQueryable<客戶銀行資訊> ReadAllNotDelete();
         void UpdateNotDelete(客戶銀行資訊 entity);
         客戶銀行資訊 ReadNotDelete(int id);
-
+        void UpdateToDelete(int id);
     }
 }

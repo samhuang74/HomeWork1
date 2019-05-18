@@ -7,6 +7,20 @@ namespace HomeWork1.Models
 			return new EFUnitOfWork();
 		}		
 		
+		public static v_客戶分類Repository Getv_客戶分類Repository()
+		{
+			var repository = new v_客戶分類Repository();
+			repository.UnitOfWork = GetUnitOfWork();
+			return repository;
+		}
+
+		public static v_客戶分類Repository Getv_客戶分類Repository(IUnitOfWork unitOfWork)
+		{
+			var repository = new v_客戶分類Repository();
+			repository.UnitOfWork = unitOfWork;
+			return repository;
+		}		
+
 		public static 客戶明細Repository Get客戶明細Repository()
 		{
 			var repository = new 客戶明細Repository();

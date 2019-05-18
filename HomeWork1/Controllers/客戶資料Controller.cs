@@ -13,16 +13,26 @@ namespace HomeWork1.Controllers
     public class 客戶資料Controller : Controller
     {
         I客戶資料Repository _客戶資料Repository;
+        Iv_客戶分類Repository _v客戶分類Repository;
 
         public 客戶資料Controller()
         {
             _客戶資料Repository = RepositoryHelper.Get客戶資料Repository();
+            _v客戶分類Repository = RepositoryHelper.Getv_客戶分類Repository();
         }
 
         // GET: 客戶資料
-        public ActionResult Index()
+        public ActionResult Index(String 客戶分類)
         {
-            return View(_客戶資料Repository.ReadAllNotDelete().ToList());
+            ViewBag.客戶分類 = new SelectList(_v客戶分類Repository.All().OrderBy(a => a.客戶分類), "客戶分類", "客戶分類", 客戶分類);
+
+            var 客戶資料 = _客戶資料Repository.ReadAllNotDelete();
+            if (!String.IsNullOrEmpty(客戶分類))
+            {
+                客戶資料 = 客戶資料.Where(a => a.客戶分類.Equals(客戶分類));
+            }
+
+            return View(客戶資料.ToList());
         }
 
         // GET: 客戶資料/Details/5
@@ -43,7 +53,9 @@ namespace HomeWork1.Controllers
         // GET: 客戶資料/Create
         public ActionResult Create()
         {
-            return View();
+            客戶資料 客戶資料 = new 客戶資料();
+            客戶資料.電話 = "1111-123456";
+            return View(客戶資料);
         }
 
         // POST: 客戶資料/Create
@@ -51,7 +63,7 @@ namespace HomeWork1.Controllers
         // 詳細資訊，請參閱 https://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,客戶名稱,統一編號,電話,傳真,地址,Email")] 客戶資料 客戶資料)
+        public ActionResult Create(客戶資料 客戶資料)
         {
             if (ModelState.IsValid)
             {
@@ -83,7 +95,7 @@ namespace HomeWork1.Controllers
         // 詳細資訊，請參閱 https://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,客戶名稱,統一編號,電話,傳真,地址,Email")] 客戶資料 客戶資料)
+        public ActionResult Edit(客戶資料 客戶資料)
         {
             if (ModelState.IsValid)
             {
@@ -114,9 +126,7 @@ namespace HomeWork1.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            客戶資料 客戶資料 = _客戶資料Repository.ReadNotDelete(id);
-            _客戶資料Repository.Delete(客戶資料);
-            _客戶資料Repository.UnitOfWork.Commit();
+            _客戶資料Repository.UpdateToDelete(id);
             return RedirectToAction("Index");
         }
 
@@ -124,7 +134,7 @@ namespace HomeWork1.Controllers
         {
             if (disposing)
             {
-                
+
             }
             base.Dispose(disposing);
         }

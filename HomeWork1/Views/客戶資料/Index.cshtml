@@ -7,6 +7,13 @@
 
 <h2>Index</h2>
 
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.DropDownList("客戶分類", null, htmlAttributes: new { id = "客戶分類", @class = "form-control" })
+}
+
+
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
@@ -29,6 +36,9 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.客戶分類)
         </th>
         <th></th>
     </tr>
@@ -55,12 +65,24 @@
                 @Html.DisplayFor(modelItem => item.Email)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.客戶分類)
+            </td>
+            <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                 @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })  
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
 
             </td>
         </tr>
     }
 
 </table>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#客戶分類').change(function () {
+            $(this).parents('form').submit();
+        });
+    });
+
+</script>

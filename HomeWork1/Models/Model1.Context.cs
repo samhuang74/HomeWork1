@@ -29,5 +29,6 @@ namespace HomeWork1.Models
         public virtual DbSet<客戶銀行資訊> 客戶銀行資訊 { get; set; }
         public virtual DbSet<客戶聯絡人> 客戶聯絡人 { get; set; }
         public virtual DbSet<客戶明細> 客戶明細 { get; set; }
+        public virtual DbSet<v_客戶分類> v_客戶分類 { get; set; }
     }
 }
