@@ -292,6 +292,8 @@
     <Content Include="Views\客戶聯絡人\Edit.cshtml" />
     <Content Include="Views\客戶聯絡人\Index.cshtml" />
     <Content Include="Views\客戶明細\Index.cshtml" />
+    <Content Include="Views\客戶聯絡人\ListBy客戶Id.cshtml" />
+    <Content Include="Views\客戶資料\List客戶聯絡人ById.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

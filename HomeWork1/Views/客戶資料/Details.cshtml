@@ -71,3 +71,10 @@
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+
+
+<!--Action get another page-->
+@Html.Action("ListBy客戶Id", "客戶聯絡人", new { 客戶Id = Model.Id })
+
+<!--Partical view -->
+@Html.Partial("List客戶聯絡人ById", (List<客戶聯絡人>)ViewBag.客戶聯絡人s)

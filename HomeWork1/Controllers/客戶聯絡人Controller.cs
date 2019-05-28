@@ -166,6 +166,11 @@ namespace HomeWork1.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult ListBy客戶Id(int 客戶Id)
+        {
+            return View(_客戶聯絡人Repository.Where(a => a.客戶Id == 客戶Id).ToList());
+        }        
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

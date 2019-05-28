@@ -14,11 +14,13 @@ namespace HomeWork1.Controllers
     {
         I客戶資料Repository _客戶資料Repository;
         Iv_客戶分類Repository _v客戶分類Repository;
+        I客戶聯絡人Repository _客戶聯絡人Repository;
 
         public 客戶資料Controller()
         {
             _客戶資料Repository = RepositoryHelper.Get客戶資料Repository();
             _v客戶分類Repository = RepositoryHelper.Getv_客戶分類Repository();
+            _客戶聯絡人Repository = RepositoryHelper.Get客戶聯絡人Repository();
         }
 
         // GET: 客戶資料
@@ -47,6 +49,9 @@ namespace HomeWork1.Controllers
             {
                 return HttpNotFound();
             }
+
+            ViewBag.客戶聯絡人s = _客戶聯絡人Repository.All().Where(a => a.客戶Id == id).ToList();
+
             return View(客戶資料);
         }
 
@@ -104,6 +109,42 @@ namespace HomeWork1.Controllers
                 return RedirectToAction("Index");
             }
             return View(客戶資料);
+        }
+
+        [HttpPost]
+        public ActionResult Edits([Bind(Exclude = "客戶資料")]客戶聯絡人[] 客戶聯絡人s)
+        {
+            if (null != 客戶聯絡人s && 客戶聯絡人s.Count() > 0)
+            {
+                if (ModelState.IsValid)
+                {
+                    foreach (客戶聯絡人 s in 客戶聯絡人s)
+                    {
+                        客戶聯絡人 m = _客戶聯絡人Repository.All().Where(a => a.Id == s.Id).FirstOrDefault();
+                        m.職稱 = s.職稱;
+                        m.手機 = s.手機;
+                        m.電話 = s.電話;
+                        _客戶聯絡人Repository.UnitOfWork.Context.Entry(m).State = EntityState.Modified;
+                        _客戶聯絡人Repository.UnitOfWork.Commit();
+                    }
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    foreach(var model in ModelState)
+                    {
+                        if(!ModelState.IsValidField(model.Key))
+                        {
+                            foreach(var error in model.Value.Errors)
+                            {
+                                String test = error.ErrorMessage;
+                            }
+                        }
+                    }
+                }
+                return RedirectToAction("Details", new { id = 客戶聯絡人s[0].客戶Id });
+            }
+            return View();
         }
 
         // GET: 客戶資料/Delete/5

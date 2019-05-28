@@ -1,0 +1,71 @@
+﻿@model IEnumerable<客戶聯絡人>
+
+@using (Html.BeginForm("Edits", "客戶資料"))
+{
+    @Html.AntiForgeryToken()
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.職稱)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.姓名)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(a => a.手機)
+            </th>
+            <th>
+                @Html.DisplayNameFor(a => a.電話)
+            </th>
+            <th>
+                @Html.DisplayNameFor(a => a.是否已刪除)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.客戶資料.客戶名稱)
+            </th>
+        </tr>
+
+        @{
+            List<客戶聯絡人> 客戶聯絡人s = Model.ToList();
+            for (int index = 0; index < 客戶聯絡人s.Count(); index++)
+            {
+                <tr>
+                    <td>
+                        @Html.HiddenFor(a => 客戶聯絡人s[index].Id)
+                        @Html.HiddenFor(a => 客戶聯絡人s[index].客戶Id)
+                        
+                        @Html.EditorFor(a => 客戶聯絡人s[index].職稱)
+                    </td>
+                    <td>
+                        @Html.HiddenFor(a => 客戶聯絡人s[index].姓名)
+                        @Html.DisplayFor(a => 客戶聯絡人s[index].姓名)
+                    </td>
+                    <td>
+                        @Html.HiddenFor(a => 客戶聯絡人s[index].Email)
+                        @Html.DisplayFor(a => 客戶聯絡人s[index].Email)
+                    </td>
+                    <td>
+                        @Html.EditorFor(a => 客戶聯絡人s[index].手機)
+                    </td>
+                    <td>
+                        @Html.EditorFor(a => 客戶聯絡人s[index].電話)
+                    </td>
+                    <td>
+                        @Html.HiddenFor(a => 客戶聯絡人s[index].客戶Id)
+                        @Html.DisplayFor(a => 客戶聯絡人s[index].是否已刪除)
+                    </td>
+                    <td>
+                        @Html.HiddenFor(a => 客戶聯絡人s[index].客戶資料.客戶名稱)
+                        @Html.DisplayFor(a => 客戶聯絡人s[index].客戶資料.客戶名稱)
+                    </td>
+                </tr>
+            }
+        }
+
+    </table>
+    <input type="submit" value="Save" class="btn btn-default" />
+}
