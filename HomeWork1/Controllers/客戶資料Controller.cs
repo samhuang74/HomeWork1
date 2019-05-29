@@ -120,6 +120,7 @@ namespace HomeWork1.Controllers
                 {
                     foreach (客戶聯絡人 s in 客戶聯絡人s)
                     {
+                        //欄位不多就先這樣
                         客戶聯絡人 m = _客戶聯絡人Repository.All().Where(a => a.Id == s.Id).FirstOrDefault();
                         m.職稱 = s.職稱;
                         m.手機 = s.手機;

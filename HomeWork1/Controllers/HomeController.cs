@@ -1,8 +1,12 @@
-﻿using System;
+﻿using HomeWork1.Models;
+using HomeWork1.Views.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
+using System.Web.Security;
 
 namespace HomeWork1.Controllers
 {
@@ -42,6 +46,20 @@ namespace HomeWork1.Controllers
 
     public class HomeController : Controller
     {
+        //TODO:實作表單驗證機制 (FormsAuthentication) 
+        //* 要在「客戶資料」表格加上【帳號】、【密碼】欄位
+        //* 密碼欄位須加密或做雜湊處裡(Hash) (SHA256)
+        //* 要有登入、登出功能
+        //* 參考文章: http://blog.miniasp.com/post/2008/02/20/Explain-Forms-Authentication-in-ASPNET-20.aspx
+        //* 客戶登入後只有一個【修改客戶資料】功能，但只能修改【密碼、電話、傳真、地址、Email】等欄位，其他欄位不能被修改或更新。
+
+        I客戶資料Repository _客戶資料Repository;
+
+        public HomeController()
+        {
+            _客戶資料Repository = RepositoryHelper.Get客戶資料Repository();
+        }
+
         public ActionResult Index()
         {
             return View();
@@ -59,6 +77,40 @@ namespace HomeWork1.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        public ActionResult Login(客戶資料 客戶資料)
+        {
+            if (ModelState.IsValid)
+            {
+                客戶資料 tmp = _客戶資料Repository.Where(a => a.帳號.Equals(客戶資料.帳號) && a.密碼.Equals(客戶資料.密碼)).FirstOrDefault();
+                if (null != tmp)
+                {
+                    tmp.密碼 = "";
+
+                    String userData = new JavaScriptSerializer().Serialize(tmp);
+                    Boolean IsPersistent = true;
+                    FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, tmp.帳號, DateTime.Now, DateTime.Now.AddHours(1), IsPersistent, userData, FormsAuthentication.FormsCookiePath);
+                    var encryptTicket = FormsAuthentication.Encrypt(ticket);
+                    HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptTicket);
+                    cookie.HttpOnly = true;
+                    this.Response.AppendCookie(cookie);
+
+                    return RedirectToAction("Index", "客戶明細", null);
+                }
+                else
+                {
+                    ModelState.AddModelError("", "帳密錯誤");
+                }
+            }
+
+            return View(客戶資料);
         }
     }
 }
