@@ -1,4 +1,5 @@
 ﻿using HomeWork1.Models;
+using HomeWork1.Utils;
 using HomeWork1.Views.Models;
 using System;
 using System.Collections.Generic;
@@ -85,16 +86,19 @@ namespace HomeWork1.Controllers
             return View();
         }
 
-        public ActionResult Login(客戶資料 客戶資料)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Login(String 帳號, String 密碼)
         {
-            if (ModelState.IsValid)
+            if (!String.IsNullOrEmpty(帳號) && !String.IsNullOrEmpty(密碼))
             {
-                客戶資料 tmp = _客戶資料Repository.Where(a => a.帳號.Equals(客戶資料.帳號) && a.密碼.Equals(客戶資料.密碼)).FirstOrDefault();
+                密碼 = CryptographyUtils.SHA256Cryp(密碼);
+                客戶資料 tmp = _客戶資料Repository.Where(a => a.帳號.Equals(帳號) && a.密碼.Equals(密碼)).FirstOrDefault();
                 if (null != tmp)
                 {
                     tmp.密碼 = "";
 
-                    String userData = new JavaScriptSerializer().Serialize(tmp);
+                    String userData = "";//new JavaScriptSerializer().Serialize(tmp);
                     Boolean IsPersistent = true;
                     FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, tmp.帳號, DateTime.Now, DateTime.Now.AddHours(1), IsPersistent, userData, FormsAuthentication.FormsCookiePath);
                     var encryptTicket = FormsAuthentication.Encrypt(ticket);
@@ -110,7 +114,15 @@ namespace HomeWork1.Controllers
                 }
             }
 
-            return View(客戶資料);
+            ViewBag.帳號 = 帳號;
+
+            return View();
+        }
+
+        public ActionResult Logout()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Login");
         }
     }
 }

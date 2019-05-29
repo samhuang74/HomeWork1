@@ -212,6 +212,7 @@
     <Compile Include="Models\客戶銀行資訊Repository.cs">
       <DependentUpon>IRepository.tt</DependentUpon>
     </Compile>
+    <Compile Include="Utils\Utils.cs" />
     <Compile Include="Views\Models\LoginUserVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -296,6 +297,7 @@
     <Content Include="Views\客戶聯絡人\ListBy客戶Id.cshtml" />
     <Content Include="Views\客戶資料\List客戶聯絡人ById.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
+    <Content Include="Views\客戶資料\UpdatePwd.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

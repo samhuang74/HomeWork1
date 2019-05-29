@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using HomeWork1.Models;
+using HomeWork1.Utils;
 
 namespace HomeWork1.Controllers
 {
@@ -72,6 +73,7 @@ namespace HomeWork1.Controllers
         {
             if (ModelState.IsValid)
             {
+                客戶資料.密碼 = CryptographyUtils.SHA256Cryp(客戶資料.密碼);
                 _客戶資料Repository.Add(客戶資料);
                 _客戶資料Repository.UnitOfWork.Commit();
                 return RedirectToAction("Index");
@@ -100,15 +102,49 @@ namespace HomeWork1.Controllers
         // 詳細資訊，請參閱 https://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(客戶資料 客戶資料)
+        public ActionResult Edit([Bind(Exclude = "密碼")]客戶資料 客戶資料)
         {
-            if (ModelState.IsValid)
+            客戶資料 tmp = _客戶資料Repository.Where(a => a.Id == 客戶資料.Id).FirstOrDefault();
+            if (null != tmp)
             {
-                _客戶資料Repository.UnitOfWork.Context.Entry(客戶資料).State = EntityState.Modified;
+                String pwd = tmp.密碼;
+                CryptographyUtils.CloneObject(客戶資料, tmp);
+                //處裡密碼不要檢查
+                tmp.密碼 = pwd;
+                ModelState.Remove("密碼");
+                if (ModelState.IsValid)
+                {
+                    _客戶資料Repository.UnitOfWork.Context.Entry(tmp).State = EntityState.Modified;
+                    _客戶資料Repository.UnitOfWork.Commit();
+                    return RedirectToAction("Index");
+                }
+            }
+            return View(客戶資料);
+        }
+
+        public ActionResult UpdatePwd(String Id)
+        {
+            //如果有需要再確認密碼就可以傳回去 , _客戶資料Repository.Where(a => a.Id.Equals(Id))
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UpdatePwd(int Id, String pwd)
+        {
+            if (!String.IsNullOrEmpty(pwd))
+            {
+                客戶資料 updateDt = _客戶資料Repository.Where(a => a.Id == Id).FirstOrDefault();
+                updateDt.密碼 = CryptographyUtils.SHA256Cryp(pwd);
+                _客戶資料Repository.UnitOfWork.Context.Entry(updateDt).State = EntityState.Modified;
                 _客戶資料Repository.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
-            return View(客戶資料);
+            else
+            {
+                
+            }
+            return View();
         }
 
         [HttpPost]
@@ -132,11 +168,11 @@ namespace HomeWork1.Controllers
                 }
                 else
                 {
-                    foreach(var model in ModelState)
+                    foreach (var model in ModelState)
                     {
-                        if(!ModelState.IsValidField(model.Key))
+                        if (!ModelState.IsValidField(model.Key))
                         {
-                            foreach(var error in model.Value.Errors)
+                            foreach (var error in model.Value.Errors)
                             {
                                 String test = error.ErrorMessage;
                             }
