@@ -92,14 +92,13 @@ namespace HomeWork1.Controllers
         {
             if ("Customer".Equals(id))
             {
-                new CustomerException("錯誤訊息測試");
+                throw new CustomerException("錯誤訊息測試");
             }
             else
             {
-                new Exception("錯誤訊息測試");
+                throw new Exception("錯誤訊息測試");
             }
 
-            return View();
         }
 
         public ActionResult Login()
