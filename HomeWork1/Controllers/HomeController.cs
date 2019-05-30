@@ -1,4 +1,5 @@
-﻿using HomeWork1.Models;
+﻿using HomeWork1.Exceptions;
+using HomeWork1.Models;
 using HomeWork1.Utils;
 using HomeWork1.Views.Models;
 using System;
@@ -80,6 +81,26 @@ namespace HomeWork1.Controllers
             return View();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HandleError(View = "NormalError", ExceptionType = typeof(Exception))]
+        [HandleError(View = "CustomerError", ExceptionType = typeof(CustomerException))]
+        public ActionResult ExceptionController(String id)
+        {
+            if ("Customer".Equals(id))
+            {
+                new CustomerException("錯誤訊息測試");
+            }
+            else
+            {
+                new Exception("錯誤訊息測試");
+            }
+
+            return View();
+        }
 
         public ActionResult Login()
         {

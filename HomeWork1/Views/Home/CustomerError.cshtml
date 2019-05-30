@@ -1,0 +1,21 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>CustomerError</title>
+</head>
+<body>
+    <div>
+        <h4>CustomerError Details:</h4>
+        <p>Controller Name: @Model.ControllerName</p>
+        <p>Action Name: @Model.ActionName</p>
+        <p>Exception: @Model.Exception</p>
+    </div>
+</body>
+</html>

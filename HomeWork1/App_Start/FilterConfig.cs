@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using HomeWork1.Filters;
+using System.Web;
 using System.Web.Mvc;
 
 namespace HomeWork1
@@ -8,6 +9,7 @@ namespace HomeWork1
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
+            filters.Add(new ActionDebug2Console());
         }
     }
 }
