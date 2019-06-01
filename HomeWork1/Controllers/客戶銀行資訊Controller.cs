@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using HomeWork1.Models;
+using X.PagedList;
 
 namespace HomeWork1.Controllers
 {
@@ -22,10 +23,14 @@ namespace HomeWork1.Controllers
         }
 
         // GET: 客戶銀行資訊
-        public ActionResult Index()
+        public ActionResult Index(int page = 1, int pageSize = 5)
         {
-            var 客戶銀行資訊 = _客戶銀行資訊Repository.ReadAllNotDelete();
-            return View(客戶銀行資訊.ToList());
+            var 客戶銀行資訊s = _客戶銀行資訊Repository.ReadAllNotDelete();
+
+            var result = 客戶銀行資訊s.OrderBy(x => x.客戶Id).ToPagedList(page, pageSize);
+            return View(result);
+
+            //return View(客戶銀行資訊s.ToList());
         }
 
         // GET: 客戶銀行資訊/Details/5
