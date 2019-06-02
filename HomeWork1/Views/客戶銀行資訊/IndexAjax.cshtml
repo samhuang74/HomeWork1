@@ -3,8 +3,15 @@
 @model IEnumerable<HomeWork1.Models.客戶銀行資訊>
 
 @{
-    ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "IndexAjax";
+    if (IsAjax)
+    {
+        Layout = "";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
 }
 
 <h2>Index</h2>
@@ -12,6 +19,13 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+
+
+<p>
+    @Ajax.ActionLink("取得時間", "GetTime", new AjaxOptions() { UpdateTargetId = "TimeSlot" })
+</p>
+
+<span id="TimeSlot"></span>
 <table class="table">
     <tr>
         <th>
@@ -65,4 +79,8 @@
     }
 
 </table>
-@Html.PagedListPager((IPagedList)Model, x => Url.Action("Index", new { page = x, pageSize = ((IPagedList)Model).PageSize }))
+
+@Html.PagedListPager((IPagedList)Model
+    , x => Url.Action("IndexAjax", new { page = x, pageSize = ((IPagedList)Model).PageSize })
+    , PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing("main") 
+)

@@ -33,6 +33,20 @@ namespace HomeWork1.Controllers
             //return View(客戶銀行資訊s.ToList());
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        public ActionResult IndexAjax(int page = 1, int pageSize = 5)
+        {
+            var 客戶銀行資訊s = _客戶銀行資訊Repository.ReadAllNotDelete();
+
+            var result = 客戶銀行資訊s.OrderBy(x => x.客戶Id).ToPagedList(page, pageSize);
+            return View(result);
+        }
+
         // GET: 客戶銀行資訊/Details/5
         public ActionResult Details(int? id)
         {
@@ -137,5 +151,11 @@ namespace HomeWork1.Controllers
             }
             base.Dispose(disposing);
         }
+
+        public ActionResult GetTime()
+        {
+            return Content(DateTime.Now.ToShortTimeString());
+        }
+
     }
 }

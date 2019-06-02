@@ -82,6 +82,28 @@ namespace HomeWork1.Controllers
             return View(客戶資料);
         }
 
+        public ActionResult CreateAjax()
+        {
+            客戶資料 客戶資料 = new 客戶資料();
+            客戶資料.電話 = "1111-123456";
+            return View(客戶資料);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateAjax(客戶資料 客戶資料)
+        {
+            if (ModelState.IsValid)
+            {
+                客戶資料.密碼 = CryptographyUtils.SHA256Cryp(客戶資料.密碼);
+                _客戶資料Repository.Add(客戶資料);
+                _客戶資料Repository.UnitOfWork.Commit();
+                return RedirectToAction("Index");
+            }
+
+            return View(客戶資料);
+        }
+
         // GET: 客戶資料/Edit/5
         public ActionResult Edit(int? id)
         {
