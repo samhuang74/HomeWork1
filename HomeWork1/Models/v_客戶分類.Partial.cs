@@ -12,7 +12,7 @@ namespace HomeWork1.Models
     public partial class v_客戶分類MetaData
     {
         
-        [StringLength(36, ErrorMessage="欄位長度不得大於 36 個字元")]
+        [StringLength(50, ErrorMessage="欄位長度不得大於 50 個字元")]
         [Required]
         public string Id { get; set; }
         

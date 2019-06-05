@@ -4,12 +4,12 @@ namespace HomeWork1.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     
-    [MetadataType(typeof(客戶明細MetaData))]
-    public partial class 客戶明細
+    [MetadataType(typeof(v_客戶明細MetaData))]
+    public partial class v_客戶明細
     {
     }
     
-    public partial class 客戶明細MetaData
+    public partial class v_客戶明細MetaData
     {
         [Required]
         public int Id { get; set; }

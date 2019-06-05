@@ -5,13 +5,13 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="726b58e835f1401c922796bcbeb46b31" Name="Diagram1">
-        <EntityTypeShape EntityType="CustomerModel.客戶資料" Width="1.5" PointX="0.75" PointY="2.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="CustomerModel.客戶銀行資訊" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="CustomerModel.客戶聯絡人" Width="1.5" PointX="3" PointY="4.375" IsExpanded="true" />
-        <AssociationConnector Association="CustomerModel.FK_客戶銀行資訊_客戶資料" ManuallyRouted="false" />
-        <AssociationConnector Association="CustomerModel.FK_客戶聯絡人_客戶資料" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="CustomerModel.客戶明細" Width="1.5" PointX="7.375" PointY="1.875" />
-        <EntityTypeShape EntityType="CustomerModel.v_客戶分類" Width="1.5" PointX="5.375" PointY="4.75" />
+        <EntityTypeShape EntityType="CustomerModel.客戶資料" Width="1.5" PointX="0.75" PointY="2.375" />
+        <EntityTypeShape EntityType="CustomerModel.客戶銀行資訊" Width="1.5" PointX="3" PointY="1.125" />
+        <EntityTypeShape EntityType="CustomerModel.客戶聯絡人" Width="1.5" PointX="3" PointY="4.5" />
+        <EntityTypeShape EntityType="CustomerModel.v_客戶分類" Width="1.5" PointX="5.75" PointY="0.75" />
+        <EntityTypeShape EntityType="CustomerModel.v_客戶明細" Width="1.5" PointX="5.75" PointY="3.75" />
+        <AssociationConnector Association="CustomerModel.FK_客戶銀行資訊_客戶資料" />
+        <AssociationConnector Association="CustomerModel.FK_客戶聯絡人_客戶資料" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

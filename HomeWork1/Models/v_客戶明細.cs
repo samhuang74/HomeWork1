@@ -12,7 +12,7 @@ namespace HomeWork1.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class 客戶明細
+    public partial class v_客戶明細
     {
         public int Id { get; set; }
         public string 客戶名稱 { get; set; }

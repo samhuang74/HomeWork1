@@ -5,7 +5,7 @@ using System.Data.Entity;
 
 namespace HomeWork1.Models
 {   
-	public  class 客戶銀行資訊Repository : EFRepository<客戶銀行資訊>, I客戶銀行資訊Repository
+	public  class 客戶銀行資訊Repository : BaseRepository<客戶銀行資訊>, I客戶銀行資訊Repository
 	{
         /// <summary>
         /// 撈出位刪除的資料

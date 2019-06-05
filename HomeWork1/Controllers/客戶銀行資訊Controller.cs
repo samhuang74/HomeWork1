@@ -7,26 +7,26 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using HomeWork1.Models;
+using HomeWork1.Services;
 using X.PagedList;
 
 namespace HomeWork1.Controllers
 {
     public class 客戶銀行資訊Controller : Controller
     {
-        I客戶銀行資訊Repository _客戶銀行資訊Repository;
-        I客戶資料Repository _客戶資料Repository;
+        I客戶資料Service _客戶資料Service;
+        I客戶銀行資訊Service _客戶銀行資訊Service;
 
-        public 客戶銀行資訊Controller()
+        public 客戶銀行資訊Controller(I客戶資料Service 客戶資料Service, I客戶銀行資訊Service 客戶銀行資訊Service)
         {
-            _客戶銀行資訊Repository = RepositoryHelper.Get客戶銀行資訊Repository();
-            _客戶資料Repository = RepositoryHelper.Get客戶資料Repository();
+            _客戶資料Service = 客戶資料Service;
+            _客戶銀行資訊Service = 客戶銀行資訊Service;
         }
 
         // GET: 客戶銀行資訊
         public ActionResult Index(int page = 1, int pageSize = 5)
         {
-            var 客戶銀行資訊s = _客戶銀行資訊Repository.ReadAllNotDelete();
-
+            var 客戶銀行資訊s = _客戶銀行資訊Service.Reads();
             var result = 客戶銀行資訊s.OrderBy(x => x.客戶Id).ToPagedList(page, pageSize);
             return View(result);
 
@@ -41,7 +41,7 @@ namespace HomeWork1.Controllers
         /// <returns></returns>
         public ActionResult IndexAjax(int page = 1, int pageSize = 5)
         {
-            var 客戶銀行資訊s = _客戶銀行資訊Repository.ReadAllNotDelete();
+            var 客戶銀行資訊s = _客戶銀行資訊Service.Reads();
 
             var result = 客戶銀行資訊s.OrderBy(x => x.客戶Id).ToPagedList(page, pageSize);
             return View(result);
@@ -54,7 +54,7 @@ namespace HomeWork1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶銀行資訊 客戶銀行資訊 = _客戶銀行資訊Repository.ReadNotDelete(id.Value);
+            客戶銀行資訊 客戶銀行資訊 = _客戶銀行資訊Service.Read(id.Value);
             if (客戶銀行資訊 == null)
             {
                 return HttpNotFound();
@@ -65,7 +65,7 @@ namespace HomeWork1.Controllers
         // GET: 客戶銀行資訊/Create
         public ActionResult Create()
         {
-            ViewBag.客戶Id = new SelectList(_客戶資料Repository.ReadAllNotDelete(), "Id", "客戶名稱");
+            ViewBag.客戶Id = new SelectList(_客戶資料Service.Reads(), "Id", "客戶名稱");
             return View();
         }
 
@@ -78,12 +78,11 @@ namespace HomeWork1.Controllers
         {
             if (ModelState.IsValid)
             {
-                _客戶銀行資訊Repository.Add(客戶銀行資訊);
-                _客戶銀行資訊Repository.UnitOfWork.Commit();
+                _客戶銀行資訊Service.Create(客戶銀行資訊);
                 return RedirectToAction("Index");
             }
 
-            ViewBag.客戶Id = new SelectList(_客戶資料Repository.ReadAllNotDelete(), "Id", "客戶名稱", 客戶銀行資訊.客戶Id);
+            ViewBag.客戶Id = new SelectList(_客戶資料Service.Reads(), "Id", "客戶名稱", 客戶銀行資訊.客戶Id);
             return View(客戶銀行資訊);
         }
 
@@ -94,12 +93,12 @@ namespace HomeWork1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶銀行資訊 客戶銀行資訊 = _客戶銀行資訊Repository.ReadNotDelete(id.Value);
+            客戶銀行資訊 客戶銀行資訊 = _客戶銀行資訊Service.Read(id.Value);
             if (客戶銀行資訊 == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.客戶Id = new SelectList(_客戶資料Repository.ReadAllNotDelete(), "Id", "客戶名稱", 客戶銀行資訊.客戶Id);
+            ViewBag.客戶Id = new SelectList(_客戶資料Service.Reads(), "Id", "客戶名稱", 客戶銀行資訊.客戶Id);
             return View(客戶銀行資訊);
         }
 
@@ -112,11 +111,10 @@ namespace HomeWork1.Controllers
         {
             if (ModelState.IsValid)
             {
-                _客戶銀行資訊Repository.UnitOfWork.Context.Entry(客戶銀行資訊).State = EntityState.Modified;
-                _客戶銀行資訊Repository.UnitOfWork.Commit();
+                _客戶銀行資訊Service.Update(客戶銀行資訊);
                 return RedirectToAction("Index");
             }
-            ViewBag.客戶Id = new SelectList(_客戶資料Repository.ReadAllNotDelete(), "Id", "客戶名稱", 客戶銀行資訊.客戶Id);
+            ViewBag.客戶Id = new SelectList(_客戶資料Service.Reads(), "Id", "客戶名稱", 客戶銀行資訊.客戶Id);
             return View(客戶銀行資訊);
         }
 
@@ -127,7 +125,7 @@ namespace HomeWork1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶銀行資訊 客戶銀行資訊 = _客戶銀行資訊Repository.ReadNotDelete(id.Value);
+            客戶銀行資訊 客戶銀行資訊 = _客戶銀行資訊Service.Read(id.Value);
             if (客戶銀行資訊 == null)
             {
                 return HttpNotFound();
@@ -140,7 +138,7 @@ namespace HomeWork1.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            _客戶銀行資訊Repository.UpdateToDelete(id);
+            _客戶銀行資訊Service.Delete(id);
             return RedirectToAction("Index");
         }
 

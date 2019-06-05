@@ -7,29 +7,33 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using HomeWork1.Models;
+using HomeWork1.Services;
 using HomeWork1.Utils;
 
 namespace HomeWork1.Controllers
 {
     public class 客戶資料Controller : Controller
     {
-        I客戶資料Repository _客戶資料Repository;
-        Iv_客戶分類Repository _v客戶分類Repository;
-        I客戶聯絡人Repository _客戶聯絡人Repository;
+        Iv_客戶分類Service _v_客戶分類;
+        I客戶資料Service _客戶資料Service;
+        I客戶聯絡人Service _客戶聯絡人Service;
 
-        public 客戶資料Controller()
+        public 客戶資料Controller(Iv_客戶分類Service v_客戶分類, I客戶資料Service 客戶資料Service, I客戶聯絡人Service 客戶聯絡人Service)
         {
-            _客戶資料Repository = RepositoryHelper.Get客戶資料Repository();
-            _v客戶分類Repository = RepositoryHelper.Getv_客戶分類Repository();
-            _客戶聯絡人Repository = RepositoryHelper.Get客戶聯絡人Repository();
+            _v_客戶分類 = v_客戶分類;
+            _客戶資料Service = 客戶資料Service;
+            _客戶聯絡人Service = 客戶聯絡人Service;
         }
 
         // GET: 客戶資料
         public ActionResult Index(String 客戶分類)
         {
-            ViewBag.客戶分類 = new SelectList(_v客戶分類Repository.All().OrderBy(a => a.客戶分類), "客戶分類", "客戶分類", 客戶分類);
+            List<v_客戶分類> selectOptions = _v_客戶分類.Reads().OrderBy(a => a.客戶分類).ToList();
+            selectOptions.Add(new v_客戶分類() { Id = "" , 客戶分類 = "" });
 
-            var 客戶資料 = _客戶資料Repository.ReadAllNotDelete();
+            ViewBag.客戶分類 = new SelectList(selectOptions, "客戶分類", "客戶分類", 客戶分類);
+
+            var 客戶資料 = _客戶資料Service.Reads();
             if (!String.IsNullOrEmpty(客戶分類))
             {
                 客戶資料 = 客戶資料.Where(a => a.客戶分類.Equals(客戶分類));
@@ -45,13 +49,13 @@ namespace HomeWork1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶資料 客戶資料 = _客戶資料Repository.ReadNotDelete(id.Value);
+            客戶資料 客戶資料 = _客戶資料Service.Read(id.Value);
             if (客戶資料 == null)
             {
                 return HttpNotFound();
             }
 
-            ViewBag.客戶聯絡人s = _客戶聯絡人Repository.All().Where(a => a.客戶Id == id).ToList();
+            ViewBag.客戶聯絡人s = _客戶聯絡人Service.Reads().Where(a => a.客戶Id == id).ToList();
 
             return View(客戶資料);
         }
@@ -74,8 +78,7 @@ namespace HomeWork1.Controllers
             if (ModelState.IsValid)
             {
                 客戶資料.密碼 = CryptographyUtils.SHA256Cryp(客戶資料.密碼);
-                _客戶資料Repository.Add(客戶資料);
-                _客戶資料Repository.UnitOfWork.Commit();
+                _客戶資料Service.Create(客戶資料);
                 return RedirectToAction("Index");
             }
 
@@ -96,8 +99,7 @@ namespace HomeWork1.Controllers
             if (ModelState.IsValid)
             {
                 客戶資料.密碼 = CryptographyUtils.SHA256Cryp(客戶資料.密碼);
-                _客戶資料Repository.Add(客戶資料);
-                _客戶資料Repository.UnitOfWork.Commit();
+                _客戶資料Service.Create(客戶資料);
                 return RedirectToAction("Index");
             }
 
@@ -111,7 +113,7 @@ namespace HomeWork1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶資料 客戶資料 = _客戶資料Repository.ReadNotDelete(id.Value);
+            客戶資料 客戶資料 = _客戶資料Service.Read(id.Value);
             if (客戶資料 == null)
             {
                 return HttpNotFound();
@@ -126,18 +128,14 @@ namespace HomeWork1.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Exclude = "密碼")]客戶資料 客戶資料)
         {
-            客戶資料 tmp = _客戶資料Repository.Where(a => a.Id == 客戶資料.Id).FirstOrDefault();
+            客戶資料 tmp = _客戶資料Service.Reads().Where(a => a.Id == 客戶資料.Id).FirstOrDefault();
             if (null != tmp)
             {
-                String pwd = tmp.密碼;
-                CryptographyUtils.CloneObject(客戶資料, tmp);
-                //處裡密碼不要檢查
-                tmp.密碼 = pwd;
+                客戶資料.密碼 = tmp.密碼;
                 ModelState.Remove("密碼");
                 if (ModelState.IsValid)
                 {
-                    _客戶資料Repository.UnitOfWork.Context.Entry(tmp).State = EntityState.Modified;
-                    _客戶資料Repository.UnitOfWork.Commit();
+                    _客戶資料Service.Update(客戶資料.Id, 客戶資料);
                     return RedirectToAction("Index");
                 }
             }
@@ -156,15 +154,14 @@ namespace HomeWork1.Controllers
         {
             if (!String.IsNullOrEmpty(pwd))
             {
-                客戶資料 updateDt = _客戶資料Repository.Where(a => a.Id == Id).FirstOrDefault();
-                updateDt.密碼 = CryptographyUtils.SHA256Cryp(pwd);
-                _客戶資料Repository.UnitOfWork.Context.Entry(updateDt).State = EntityState.Modified;
-                _客戶資料Repository.UnitOfWork.Commit();
+                客戶資料 entity = _客戶資料Service.Read(Id);
+                entity.密碼 = CryptographyUtils.SHA256Cryp(pwd);
+                _客戶資料Service.Update(Id, entity);
                 return RedirectToAction("Index");
             }
             else
             {
-                
+
             }
             return View();
         }
@@ -179,12 +176,11 @@ namespace HomeWork1.Controllers
                     foreach (客戶聯絡人 s in 客戶聯絡人s)
                     {
                         //欄位不多就先這樣
-                        客戶聯絡人 m = _客戶聯絡人Repository.All().Where(a => a.Id == s.Id).FirstOrDefault();
+                        客戶聯絡人 m = _客戶聯絡人Service.Reads().Where(a => a.Id == s.Id).FirstOrDefault();
                         m.職稱 = s.職稱;
                         m.手機 = s.手機;
                         m.電話 = s.電話;
-                        _客戶聯絡人Repository.UnitOfWork.Context.Entry(m).State = EntityState.Modified;
-                        _客戶聯絡人Repository.UnitOfWork.Commit();
+                        _客戶聯絡人Service.Update(s.Id, m);
                     }
                     return RedirectToAction("Index");
                 }
@@ -213,11 +209,13 @@ namespace HomeWork1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶資料 客戶資料 = _客戶資料Repository.ReadNotDelete(id.Value);
+
+            客戶資料 客戶資料 = _客戶資料Service.Read(id.Value);
             if (客戶資料 == null)
             {
                 return HttpNotFound();
             }
+
             return View(客戶資料);
         }
 
@@ -226,7 +224,7 @@ namespace HomeWork1.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            _客戶資料Repository.UpdateToDelete(id);
+            _客戶資料Service.Delete(id);
             return RedirectToAction("Index");
         }
 

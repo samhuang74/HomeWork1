@@ -1,4 +1,6 @@
-﻿using System;
+﻿using HomeWork1.Models;
+using Repositories;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -16,6 +18,19 @@ namespace HomeWork1
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            //repository
+            UnityConfig.RegisterComponents();
+        }
+
+        protected void Application_BeginRequest()
+        {
+            SetDbHTTPContext();
+        }
+
+        private static void SetDbHTTPContext()
+        {
+            HttpContext.Current.Items[Repositories.FieldKey.DB_CONTEXT_KEY] = new CustomerEntities();
         }
     }
 }
