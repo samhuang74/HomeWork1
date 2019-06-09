@@ -1,7 +1,6 @@
 ﻿using HomeWork1.Exceptions;
 using HomeWork1.Models;
 using HomeWork1.Services;
-using HomeWork1.Utils;
 using HomeWork1.Views.Models;
 using System;
 using System.Collections.Generic;
@@ -10,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Web.Security;
+using Utils;
 
 namespace HomeWork1.Controllers
 {

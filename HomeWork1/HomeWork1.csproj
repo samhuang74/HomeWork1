@@ -140,7 +140,7 @@
       <HintPath>..\packages\Unity.5.2.0\lib\net47\Unity.ServiceLocation.dll</HintPath>
     </Reference>
     <Reference Include="Utils">
-      <HintPath>..\..\..\Libs\Utils.dll</HintPath>
+      <HintPath>..\..\Utils\Utils\bin\Debug\net461\Utils.dll</HintPath>
     </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
@@ -232,7 +232,6 @@
     <Compile Include="Services\客戶聯絡人Service.cs" />
     <Compile Include="Services\客戶資料Service.cs" />
     <Compile Include="Services\客戶銀行資訊Service.cs" />
-    <Compile Include="Utils\Utils.cs" />
     <Compile Include="Views\Models\LoginUserVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

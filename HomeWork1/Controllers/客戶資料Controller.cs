@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using HomeWork1.Models;
 using HomeWork1.Services;
-using HomeWork1.Utils;
+using Utils;
 
 namespace HomeWork1.Controllers
 {
