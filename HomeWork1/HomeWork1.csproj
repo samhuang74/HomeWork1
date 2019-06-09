@@ -405,6 +405,7 @@
     <Content Include="Views\Home\CustomerError.cshtml" />
     <Content Include="Views\客戶銀行資訊\IndexAjax.cshtml" />
     <Content Include="Views\客戶資料\CreateAjax.cshtml" />
+    <Content Include="Views\Home\RazorView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

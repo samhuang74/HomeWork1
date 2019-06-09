@@ -108,5 +108,10 @@ namespace HomeWork1.Controllers
             FormsAuthentication.SignOut();
             return RedirectToAction("Login");
         }
+
+        public ActionResult RazorView()
+        {
+            return View();
+        }
     }
 }

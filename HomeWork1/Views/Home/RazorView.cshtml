@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewBag.Title = "RazorView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>RazorView</h2>
+
+@{
+    var data = new int[] { 1, 2, 3, 4, 5 };
+    for (int index = 0; index < data.Count(); index++)
+    {@(data[index])}
+<p></p>
+for (int index = 0; index < data.Count(); index++)
+{@(" " + data[index])}
+<p></p>
+}
+
