@@ -140,7 +140,7 @@
       <HintPath>..\packages\Unity.5.2.0\lib\net47\Unity.ServiceLocation.dll</HintPath>
     </Reference>
     <Reference Include="Utils">
-      <HintPath>..\..\Utils\Utils\bin\Debug\net461\Utils.dll</HintPath>
+      <HintPath>..\..\..\Utils\Utils\bin\Release\net461\Utils.dll</HintPath>
     </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
