@@ -23,11 +23,14 @@ namespace HomeWork1
                       "~/Scripts/bootstrap.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/ajax").Include(
-                      "~/Scripts/jquery.unobtrusive-ajax.min.js"));            
+                      "~/Scripts/jquery.unobtrusive-ajax.min.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/Content/style.css",                      
+                      "~/Content/style-responsive.css",
+                      "~/Content/bootstrap-responsive.min.css"));
         }
     }
 }
