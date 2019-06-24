@@ -1,5 +1,6 @@
 namespace HomeWork1.Models
 {
+    using HomeWork1.DataTypeAttributes;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -33,6 +34,7 @@ namespace HomeWork1.Models
         public string 地址 { get; set; }
         
         [StringLength(250, ErrorMessage="欄位長度不得大於 250 個字元")]
+        [Email]
         public string Email { get; set; }
         [Required]
         public bool 是否已刪除 { get; set; }
