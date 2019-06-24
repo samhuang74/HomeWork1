@@ -19,12 +19,15 @@ namespace HomeWork1.Models.VModels
 
         [Display(Name = "選擇")]
         public List<Option> Options { get; set; }
+
+        [Display(Name = "結果")]
+        public String Value { get; set; }
     }
 
     public class Option
     {
-        public String Title { get; set; }
-        public String Value { get; set; }
-        public Boolean IsChecked { get; set; }
+        //public String OTitle { get; set; }
+        public String OValue { get; set; }
+        public Boolean OIsChecked { get; set; }
     }
 }

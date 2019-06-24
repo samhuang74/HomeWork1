@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<HomeWork1.Models.VModels.Question>
-
 @{
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -11,40 +10,53 @@
     @Html.ActionLink("Create New", "Create")
 </p>
 
+@using (Html.BeginForm("Edit", "Questions"))
+{
+    @Html.AntiForgeryToken()
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.QId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Kind)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Topic)
-        </th>
-        <th></th>
-    </tr>
+    <table class="table">
+        @*<tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.QId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Kind)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Topic)
+                </th>
+                <th></th>
+            </tr>*@
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.QId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Kind)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Topic)
-            </td>
-            <td>
-                @foreach (var option in item.Options)
-                {
-                    <input name="@item.QId" id="@item.QId" type="radio" value="@option.Value" checked="@option.IsChecked" />@option.Value<br />
-                }
-            </td>
-        </tr>
-    }
+        @{
 
-</table>
+            List<HomeWork1.Models.VModels.Question> qs = Model.ToList();
+            for (int index = 0; index < qs.Count(); index++)
+            {
+                <tr>
+                    <td>
+                        @Html.HiddenFor(a => qs[index].QId)
+                        @Html.HiddenFor(a => qs[index].Kind)
+                        @Html.DisplayFor(a => qs[index].QId)
+                    </td>
+                    <td>
+                        @Html.HiddenFor(a => qs[index].Topic)
+                        @Html.DisplayFor(a => qs[index].Topic)
+                    </td>
+                    <td>
+                        @foreach (var option in qs[index].Options)
+                        {
+                            <input name="@qs[index].QId" id="@qs[index].QId" type="radio" value="@option.OValue" checked="@option.OIsChecked" />@option.OValue
+                        }
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </div>
+}

@@ -65,8 +65,8 @@ namespace HomeWork1.Controllers
                 {
                     Option op = new Option();
 
-                    op.Title = "選擇" + index;
-                    op.Value = StringUtils.getToString(index);
+                    //op.OTitle = "選擇" + index;
+                    op.OValue = StringUtils.getToString(index);
 
                     //if (index % 2 == 0)
                     //{
@@ -85,13 +85,16 @@ namespace HomeWork1.Controllers
 
         // POST: Questions/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(Question[] qs)
         {
             try
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
+                List<Question> re = new List<Question>();
+                for(int index = 0; index < qs.Count(); index++)
+                {
+                    re.Add(qs[index]);
+                }
+                return View(re);
             }
             catch
             {
