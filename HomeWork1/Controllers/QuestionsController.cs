@@ -58,40 +58,27 @@ namespace HomeWork1.Controllers
                 q.Kind = "1";
                 q.QId = idx;
                 q.Topic = "test" + idx;
-
-                List<Option> options = new List<Option>();
-
-                for (int index = 0; index < 4; index++)
-                {
-                    Option op = new Option();
-
-                    //op.OTitle = "選擇" + index;
-                    op.OValue = StringUtils.getToString(index);
-
-                    //if (index % 2 == 0)
-                    //{
-                    //    op.IsChecked = true;
-                    //}
-
-                    options.Add(op);
-                }
-
-                q.Options = options;
+                q.Options = GetOptions();
 
                 qs.Add(q);
             }
             return View(qs);
         }
 
-        // POST: Questions/Edit/5
+        // POST: Questions/Edit/obj
         [HttpPost]
         public ActionResult Edit(Question[] qs)
         {
             try
             {
                 List<Question> re = new List<Question>();
-                for(int index = 0; index < qs.Count(); index++)
+                for (int index = 0; index < qs.Count(); index++)
                 {
+                    //如果 option = null , 補上預設值 , 像是 radio 就得要補預設值 
+                    if (null == qs[index].Options)
+                    {
+                        qs[index].Options = GetOptions();
+                    }
                     re.Add(qs[index]);
                 }
                 return View(re);
@@ -122,6 +109,23 @@ namespace HomeWork1.Controllers
             {
                 return View();
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        private List<Option> GetOptions()
+        {
+            List<Option> options = new List<Option>();
+            for (int index = 0; index < 4; index++)
+            {
+                Option op = new Option();
+                op.OValue = StringUtils.getToString(index);
+                options.Add(op);
+            }
+
+            return options;
         }
     }
 }

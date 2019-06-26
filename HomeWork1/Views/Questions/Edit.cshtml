@@ -44,23 +44,24 @@
                         @Html.DisplayFor(a => qs[index].Topic)
                     </td>
                     <td>
-                        Html.CheckBoxFor(Model.RoleAccess[i].IsEnabled, new { id = Model.RoleAccess[i].MenuID });
-                        Html.DisplayFor(Model.RoleAccess[i].MenuDisplayName);
-
                         @{
-                            List<HomeWork1.Models.VModels.Option> Options = qs[index].Options;
-                            for (int i = 0; i < Options.Count(); i++)
+                            //CheckBox 範例
+                            @*for (int i = 0; i < qs[index].Options.Count(); i++)
+                                {
+                                    @Html.CheckBoxFor(a => qs[index].Options[i].OIsChecked);
+                                    @Html.LabelFor(a => qs[index].Options[i].OValue);
+                                }*@
+
+                            for (int i = 0; i < qs[index].Options.Count(); i++)
                             {
-                                Html.CheckBoxFor(Options, new { id = qs[index].Options[i] });
-                                Html.DisplayFor(Options[i].OValue);
+                                @Html.RadioButtonFor(a => qs[index].Value, qs[index].Options[i].OValue, new { @id = "Statusradio0", @name = "Status" })
+                                @Html.LabelFor(a => qs[index].Options[i].OValue);
                             }
 
-                            @foreach (var option in qs[index].Options)
-                            {
-
-
-                                <input name="@qs[index].QId" id="@qs[index].QId" type="radio" value="@option.OValue" checked="@option.OIsChecked" />@option.OValue
-                            }
+                            @*@foreach (var option in qs[index].Options)
+                                {
+                                    <input name="@qs[index].QId" id="@qs[index].QId" type="radio" value="@option.OValue" checked="@option.OIsChecked" />@option.OValue
+                                }*@
                         }
                     </td>
                 </tr>
