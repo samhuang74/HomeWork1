@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>顯示 多語系 測試字串 </h2>
+
+
+@Html.ActionLink("default", "Index", new { lang = "" })
+@Html.ActionLink("Eng", "Index", new { lang = "en-US" })
+
+<div>
+
+    <span>@ViewBag.TestString</span>
+    <span>@Resources.Resource.MainMenu</span>
+</div>
+

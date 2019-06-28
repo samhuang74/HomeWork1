@@ -54,8 +54,8 @@
 
                             for (int i = 0; i < qs[index].Options.Count(); i++)
                             {
-                                @Html.RadioButtonFor(a => qs[index].Value, qs[index].Options[i].OValue, new { @id = "Statusradio0", @name = "Status" })
-                                @Html.LabelFor(a => qs[index].Options[i].OValue);
+                                @Html.RadioButtonFor(a => qs[index].Value, qs[index].Options[i].OValue)
+                                @qs[index].Options[i].OValue
                             }
 
                             @*@foreach (var option in qs[index].Options)
