@@ -13,10 +13,24 @@ namespace HomeWork1.Controllers
         // GET: 多語系
         public ActionResult Index(String lang = "")
         {
-            //設定使用語系
-            Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(lang);
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo(lang);
             return View();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="lang"></param>
+        /// <returns></returns>
+        public ActionResult SetCulture(String ntustLan = "")
+        {
+            if (!String.IsNullOrEmpty(ntustLan))
+            {
+                var cookie = Request.Cookies["ntustLan"] ?? new HttpCookie("ntustLan");
+                cookie.HttpOnly = true;
+                cookie.Value = Server.UrlEncode(ntustLan);
+                Response.Cookies.Add(cookie);
+            }
+            return RedirectToAction("Index");
         }
     }
 }

@@ -35,6 +35,19 @@
                         <li>@Html.ActionLink("客戶資料", "Index", "客戶資料")</li>
                         <li>@Html.ActionLink("客戶銀行資訊", "Index", "客戶銀行資訊")</li>
                         <li>@Html.ActionLink("客戶聯絡人", "Index", "客戶聯絡人")</li>
+                        <li>@Html.ActionLink("多語系", "Index", "多語系")</li>
+                        @{
+                            var ntustLan = Request.Cookies["ntustLan"];
+                            if (null != ntustLan && "zh-TW".Equals(ntustLan.Value))
+                            {
+                                @Html.ActionLink("en", "Index", "Home", new { ntustLan = "en-US" }, "")
+                            }
+                            else if (null != ntustLan && "en-US".Equals(ntustLan.Value))
+                            {
+                                @Html.ActionLink("zh", "Index", "Home", new { ntustLan = "zh-TW" }, "")
+                            }
+                        }
+
                         <li>@Html.ActionLink("登出", "Logout", "Home")</li>
                         <li class="dropdown hidden-phone">
                             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">

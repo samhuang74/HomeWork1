@@ -28,8 +28,10 @@ namespace HomeWork1
 
         protected void Application_BeginRequest()
         {
+            //設定DB Connection
             SetDbHTTPContext();
 
+            //設定語系
             SetLanguage(Request);
         }
 
@@ -45,45 +47,61 @@ namespace HomeWork1
 
         private static void SetLanguage(HttpRequest Request)
         {
-            CultureInfo ci = null;
             try
             {
-                //有request 才要切換 
-                String lan = Request.Cookies["ntustLan"].Value;
+                String lan = null;
+
+                if (null == Request.Cookies["ntustLan"])
+                {
+                    String defaultLan = "zh-TW";
+                    var cookie = Request.Cookies["ntustLan"] ?? new HttpCookie("ntustLan");
+                    cookie.HttpOnly = true;
+                    cookie.Value = defaultLan;
+                    HttpContext.Current.Response.Cookies.Add(cookie);
+
+                    lan = defaultLan;
+                }
+                else if (!String.IsNullOrEmpty(Request.QueryString["ntustLan"]))
+                {
+                    var cookie = Request.Cookies["ntustLan"] ?? new HttpCookie("ntustLan");
+                    cookie.HttpOnly = true;
+                    cookie.Value = Request.QueryString["ntustLan"];
+                    HttpContext.Current.Response.Cookies.Add(cookie);
+
+                    lan = Request.QueryString["ntustLan"];
+                }
+                else if (null != Request.Cookies["ntustLan"])
+                {
+                    lan = Request.Cookies["ntustLan"].Value;
+
+                    //取得用戶端語言喜好設定(已排序的字串陣列)
+                    //var userLanguages = Request.UserLanguages;
+                    //if (userLanguages.Length > 0)
+                    //{
+                    //    try
+                    //    {
+                    //        ci = new CultureInfo(userLanguages[0]);
+                    //    }
+                    //    catch (CultureNotFoundException)
+                    //    {
+                    //        ci = CultureInfo.InvariantCulture;
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    ci = CultureInfo.InvariantCulture;
+                    //}
+                }
+
                 if (!String.IsNullOrEmpty(lan))
                 {
-
+                    CultureInfo ci = new CultureInfo(lan);
+                    System.Threading.Thread.CurrentThread.CurrentUICulture = ci;
+                    System.Threading.Thread.CurrentThread.CurrentCulture = ci;
                 }
-
-                //取得用戶端語言喜好設定(已排序的字串陣列)
-                var userLanguages = Request.UserLanguages;
-
-                if (userLanguages.Length > 0)
-                {
-                    try
-                    {
-                        ci = new CultureInfo(userLanguages[0]);
-                    }
-                    catch (CultureNotFoundException)
-                    {
-                        ci = CultureInfo.InvariantCulture;
-                    }
-                }
-                else
-                {
-                    ci = CultureInfo.InvariantCulture;
-                }
-
             }
             catch (Exception)
-            {
-                throw;
-            }
-            finally
-            {
-                System.Threading.Thread.CurrentThread.CurrentUICulture = ci;
-                System.Threading.Thread.CurrentThread.CurrentCulture = ci;
-            }
+            { }
         }
     }
 
