@@ -51,17 +51,7 @@ namespace HomeWork1
             {
                 String lan = null;
 
-                if (null == Request.Cookies["ntustLan"])
-                {
-                    String defaultLan = "zh-TW";
-                    var cookie = Request.Cookies["ntustLan"] ?? new HttpCookie("ntustLan");
-                    cookie.HttpOnly = true;
-                    cookie.Value = defaultLan;
-                    HttpContext.Current.Response.Cookies.Add(cookie);
-
-                    lan = defaultLan;
-                }
-                else if (!String.IsNullOrEmpty(Request.QueryString["ntustLan"]))
+                if (!String.IsNullOrEmpty(Request.QueryString["ntustLan"]))
                 {
                     var cookie = Request.Cookies["ntustLan"] ?? new HttpCookie("ntustLan");
                     cookie.HttpOnly = true;
@@ -91,6 +81,16 @@ namespace HomeWork1
                     //{
                     //    ci = CultureInfo.InvariantCulture;
                     //}
+                }
+                else if (null == Request.Cookies["ntustLan"])
+                {
+                    String defaultLan = "zh-TW";
+                    var cookie = Request.Cookies["ntustLan"] ?? new HttpCookie("ntustLan");
+                    cookie.HttpOnly = true;
+                    cookie.Value = defaultLan;
+                    HttpContext.Current.Response.Cookies.Add(cookie);
+
+                    lan = defaultLan;
                 }
 
                 if (!String.IsNullOrEmpty(lan))
