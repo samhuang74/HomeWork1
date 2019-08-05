@@ -51,7 +51,8 @@
                                     @Html.CheckBoxFor(a => qs[index].Options[i].OIsChecked);
                                     @Html.LabelFor(a => qs[index].Options[i].OValue);
                                 }*@
-
+                            
+                            //Radio 範例
                             for (int i = 0; i < qs[index].Options.Count(); i++)
                             {
                                 @Html.RadioButtonFor(a => qs[index].Value, qs[index].Options[i].OValue)

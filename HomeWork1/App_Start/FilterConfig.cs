@@ -8,7 +8,10 @@ namespace HomeWork1
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            filters.Add(new HandleErrorAttribute());
+            //filters.Add(new HandleErrorAttribute());
+            //exception handle and write to nlog
+            filters.Add(new LogErrorsAttribute());
+
             filters.Add(new ActionDebug2Console());
         }
     }
