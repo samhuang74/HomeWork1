@@ -45,14 +45,14 @@
                     </td>
                     <td>
                         @{
-                            //CheckBox 範例
+                            //CheckBox 範例 回傳會是 array 物件
                             @*for (int i = 0; i < qs[index].Options.Count(); i++)
                                 {
                                     @Html.CheckBoxFor(a => qs[index].Options[i].OIsChecked);
                                     @Html.LabelFor(a => qs[index].Options[i].OValue);
                                 }*@
                             
-                            //Radio 範例
+                            //Radio 範例 回傳會是一個 check 的 value
                             for (int i = 0; i < qs[index].Options.Count(); i++)
                             {
                                 @Html.RadioButtonFor(a => qs[index].Value, qs[index].Options[i].OValue)
