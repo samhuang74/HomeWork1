@@ -128,6 +128,10 @@ namespace HomeWork1.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Exclude = "密碼")]客戶資料 客戶資料)
         {
+            //檢查 modelstate 錯誤項目
+            var errors = ModelState.Values.SelectMany(v => v.Errors);
+
+
             客戶資料 tmp = _客戶資料Service.Reads().Where(a => a.Id == 客戶資料.Id).FirstOrDefault();
             if (null != tmp)
             {
